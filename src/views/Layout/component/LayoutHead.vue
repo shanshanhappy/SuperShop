@@ -7,7 +7,7 @@
   <div class="container">
     <ul>
       <!--多模板渲染-->
-      <template v-if="false">
+      <template v-if="true">
         <li><a href="javascript:;"><i class="iconfont icon-user"></i>商家身份</a></li>
         <li><!--不是很懂下面的是不是有编程语句-->
           <el-popconfirm title="确认退出吗？" confirm-button-text="确认" cancel-button-text="取消">
