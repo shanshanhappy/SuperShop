@@ -34,7 +34,7 @@ npm run build
 npm run lint
 ```
 ## API 接口设计
-/*
+
 我在这个使用网上的一个登入验证的api接口
 可以在：src\utils\http2.js中查看：这个接口的baseurl
 在src\apis\user.js中可以查看：这个loginAPI2是我封装的接口
@@ -43,7 +43,9 @@ npm run lint
 在src\views\Login\index.vue中可具体查看
 
 登录的账号与密码都是：admin
- */
+
+
+
  ##下面是需要实现的接口
 1. 商品管理接口
 GET /products: 获取商品列表，支持分页、筛选和排序。
