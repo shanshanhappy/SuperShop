@@ -1,36 +1,29 @@
 <!-- eslint-disable vue/multi-word-component-names -->
+
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-/*
-//
-import 'element-plus/theme-chalk/el-message.css'
-import { ElMessage } from 'element-plus'
-
-//我在想这个该不会是javabean之类的吧
-import { useUserStore } from '@/stores/userStore'
-const userStore = useUserStore()*/
-
 //上面的，视频都没写
 import { ref } from 'vue'
-import { loginAPI } from '@/apis/user'
+import { loginAPI2 } from '@/apis/user'
+import { useRouter } from 'vue-router'
 import 'element-plus/theme-chalk/el-message.css'
 import { ElMessage } from 'element-plus'
-import { useRouter } from 'vue-router'
 //一.表单校验功能（账号名+密码）
 //1.准备表单对象
 const form = ref({
-      account:'123456',
-      password:'123456789',
+      username:'',
+      password:'',
       agree:false
 })
 
 //2.准备规则对象
 const rules = {
-  account:[
+  username:[
     {required:true, message:'请输入账号', trigger:'blur'},//md这个是什么鬼触发
   ],
   password:[
     {required:true, message:'请输入密码', trigger:'blur'},//用户名与密码只需要通过配置就可以进行校验
-    {min:6,max:14,message:"密码长度为6到14",trigger:'blur'}
+    {min:1,max:14,message:"密码长度为6到14",trigger:'blur'}
   ],
   //3.勾选选项自定义校验
   agree:[
@@ -51,46 +44,37 @@ const rules = {
 //二.获取form实例做统一校验
 const formRef = ref(null)
 const router = useRouter()
-const {account,password}=form.value//获取表单的两个字段
+//const {username,password}=form.value//获取表单的两个字段
 const doLogin = ()=>{
 //调用实例方法
 formRef.value.validate(async(valid) => {
      if(valid){
          // TODO LOGIN
-     const res =await loginAPI({account,password})//调用api验证账户是否正确
+     const res =await loginAPI2(form.value)//调用api验证账户是否正确,
      console.log(res)
 
       // 1. 提示用户
       ElMessage({ type: 'success', message: '登录成功' })
-      /*const res=await loginAPI({account,password})
-      console.log(res)原本这里用api接口的*/
-      router.replace({ path: '/' })//跳转到首页
+     //2.利用cookies存储用户信息，但是现在只有一个用户先不写了
+
+     //3.验证成功后跳转到相关页面
+      router.replace({ path: '/back' })
      }else{
       console.log('登录失败')
       return false
      }
   })
 }
-
-
-
 </script>
 
 <template>
-  <div>
-    <header class="login-header">
-      <div class="container m-top-20">
-        <h1 class="logo">
-          <RouterLink to="/">SuperShop</RouterLink>
-        </h1>
-        <RouterLink class="entry" to="/">
-          进入网站首页>>
-          <i class="iconfont icon-angle-right"></i>
-          <i class="iconfont icon-angle-right"></i>
-        </RouterLink>
-      </div>
-    </header>
-    <section class="login-section">
+  <el-row class="total">
+    <el-col :span="16" class="left">
+      <h1>左边写写欢迎的话与提示的话，对了这里应该返回首页的链接</h1>
+    </el-col>
+    <el-col :span="8" class="right">
+    
+      <section >
       <div class="wrapper">
         <nav>
           <a href="javascript:;">账户登录</a>
@@ -98,8 +82,8 @@ formRef.value.validate(async(valid) => {
         <div class="account-box">
           <div class="form"> <!--绑定对象获取表单实例-->
             <el-form ref="formRef"  :model="form"  :rules="rules" label-position="right" label-width="60px"   status-icon> <!--给这个表单绑定model属性，啊我不知道这个model属性是干什么的-->
-              <el-form-item prop="account"  label="账户">
-                <el-input v-model="form.account"/><!--为啥这个是双向绑定呀-->
+              <el-form-item prop="username"  label="账户">
+                <el-input v-model="form.username"/><!--为啥这个是双向绑定呀-->
               </el-form-item>
               <el-form-item prop="password" label="密码">
                 <el-input v-model="form.password"/>
@@ -115,81 +99,36 @@ formRef.value.validate(async(valid) => {
         </div>
       </div>
     </section>
-
-    <footer class="login-footer">
-      <div class="container">
-        <p>
-          <a href="javascript:;">关于我们</a>
-          <a href="javascript:;">帮助中心</a>
-          <a href="javascript:;">售后服务</a>
-          <a href="javascript:;">配送与验收</a>
-          <a href="javascript:;">商务合作</a>
-          <a href="javascript:;">搜索推荐</a>
-          <a href="javascript:;">友情链接</a>
-        </p>
-        <p>SuperShop &copy; 软件2201/软件2202</p>
-      </div>
-    </footer>
-  </div>
+    </el-col>
+  </el-row>
 </template>
 
-<style scoped lang='scss'>
-.login-header {
-  background: #fff;
-  border-bottom: 1px solid #e4e4e4;
-
-  .container {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-  }
-
-  .logo {
-    width: 200px;
-
-    a {
-      display: block;
-      height: 132px;
-      width: 100%;
-      text-indent: -9999px;
-      background: url("@/assets/images/logo.png") no-repeat center 18px / contain;
-    }
-  }
-
-  .sub {
-    flex: 1;
-    font-size: 24px;
-    font-weight: normal;
-    margin-bottom: 38px;
-    margin-left: 20px;
-    color: #666;
-  }
-
-  .entry {
-    width: 120px;
-    margin-bottom: 38px;
-    font-size: 16px;
-
-    i {
-      font-size: 14px;
-      color: $xtxColor;
-      letter-spacing: -5px;
-    }
-  }
+<style scoped lang="scss">
+.total {
+  display: flex;
+  min-height: 100vh; // 100% height of the viewport
 }
 
-.login-section {
-  background: url('@/assets/images/login-bg.png') no-repeat center / cover;
-  height: 488px;
-  position: relative;
+.left {
+  background-color: aquamarine;
 
-  .wrapper {
-    width: 380px;
+  /* 你可以根据需要添加更多样式 */
+}
+
+.right {
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  /* 你可以根据需要添加更多样式 */
+ 
+}
+.wrapper {
+    width: 480px;
     background: #fff;
-    position: absolute;
     left: 50%;
     top: 54px;
-    transform: translate3d(100px, 0, 0);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 
     nav {
@@ -212,31 +151,8 @@ formRef.value.validate(async(valid) => {
       }
     }
   }
-}
 
-.login-footer {
-  padding: 30px 0 50px;
-  background: #fff;
-
-  p {
-    text-align: center;
-    color: #999;
-    padding-top: 20px;
-
-    a {
-      line-height: 1;
-      padding: 0 10px;
-      color: #999;
-      display: inline-block;
-
-      ~a {
-        border-left: 1px solid #ccc;
-      }
-    }
-  }
-}
-
-.account-box {
+  .account-box {
   .toggle {
     padding: 15px 40px;
     text-align: right;
@@ -359,4 +275,6 @@ formRef.value.validate(async(valid) => {
   width: 100%;
   color: #fff;
 }
+
+
 </style>

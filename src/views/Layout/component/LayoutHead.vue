@@ -6,24 +6,9 @@
  <nav class="app-topnav">
   <div class="container">
     <ul>
-      <!--多模板渲染-->
-      <template v-if="true">
-        <li><a href="javascript:;"><i class="iconfont icon-user"></i>商家身份</a></li>
-        <li><!--不是很懂下面的是不是有编程语句-->
-          <el-popconfirm title="确认退出吗？" confirm-button-text="确认" cancel-button-text="取消">
-            <template #reference>
-                <a href="javascript:;">退出登录</a>
-              </template>
-          </el-popconfirm>
-        </li>
-        <li><a href="javascript:;">我的订单</a></li>
-        <li><a href="javascript:;">会员中心</a></li>
-      </template>
-      <template v-else>
           <li><a href="javascript:;" @click="$router.push('/login')">身份切换</a></li><!--编写登录事件-->
           <li><a href="javascript:;">帮助中心</a></li>
           <li><a href="javascript:;">关于我们</a></li>
-        </template>
     </ul>
   </div>
  </nav>
@@ -32,7 +17,7 @@
 
 <style scoped lang="scss">
 .app-topnav {
-  background: #333;
+  background:  $xtxColor;
   ul {
     display: flex;
     height: 53px;
