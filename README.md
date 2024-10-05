@@ -36,7 +36,8 @@ npm run lint
 ## API 接口设计
 
 我在这个使用网上的一个登入验证的api接口
-可以在：src\utils\http2.js中查看：这个接口的baseurl
+
+可以在：src\utils\http2.js中查看：这个接口的baseurl（由于跨域问题我在vite.config.js中就baseurl进行了转化,转化为/api）
 在src\apis\user.js中可以查看：这个loginAPI2是我封装的接口
 它的使用方式是这样的：
 ![alt text](image.png)
