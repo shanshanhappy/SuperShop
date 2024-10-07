@@ -30,9 +30,9 @@
         </el-form-item>
   
         <el-form-item>
-          <el-button v-if="!isEditing" type="primary" @click="onEdit">编辑</el-button>
-          <el-button v-else type="primary" @click="onSave">保存</el-button>
-          <el-button v-if="isEditing" @click="onCancel">取消</el-button>
+          <el-button v-if="!isEditing" type="primary" @click="onEdit" class="edit-button">编辑</el-button>
+          <el-button v-else type="primary" @click="onSave" class="save-button">保存</el-button>
+          <el-button v-if="isEditing" @click="onCancel" class="cancel-button">取消</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -89,7 +89,62 @@
   <style scoped>
   .account-management {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 40px auto;
     padding: 20px;
+    background-color: #f9fafb;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  }
+  .account-form {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .el-form-item {
+    margin-bottom: 24px;
+  }
+
+  .el-input__inner {
+    border-radius: 6px;
+    transition: border-color 0.3s;
+  }
+
+  .el-input__inner:focus {
+    border-color: #409eff;
+  }
+
+  .edit-button,
+  .save-button,
+  .cancel-button {
+    min-width: 100px;
+    border-radius: 6px;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .edit-button:hover,
+  .save-button:hover {
+    background-color: #66b1ff;
+  }
+
+  .cancel-button {
+    color: #f56c6c;
+    border-color: #f56c6c;
+  }
+
+  .cancel-button:hover {
+    background-color: #fde2e2;
+  }
+
+  .el-form--disabled .el-input__inner {
+    background-color: #f5f7fa;
+  }
+
+  .el-form--disabled .el-button {
+    background-color: #ebeef5;
+    border-color: #ebeef5;
+    color: #c0c4cc;
+    pointer-events: none;
   }
   </style>

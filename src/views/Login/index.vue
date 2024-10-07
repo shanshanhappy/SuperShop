@@ -40,6 +40,9 @@ const rules = {
    }
   ]
 }
+const goHome = () => {
+  window.location.href = '/';
+};
 
 //二.获取form实例做统一校验
 const formRef = ref(null)
@@ -70,10 +73,15 @@ formRef.value.validate(async(valid) => {
 <template>
   <el-row class="total">
     <el-col :span="16" class="left">
-      <h1>左边写写欢迎的话与提示的话，对了这里应该返回首页的链接</h1>
+<!--      <h1>左边写写欢迎的话与提示的话，对了这里应该返回首页的链接</h1>-->
+      <div class="left-content">
+        <h1 class="welcome">欢迎来到我们的平台！</h1>
+        <p>请点击以下链接返回首页</p>
+        <el-button type="primary" class="home-btn" @click="goHome">返回首页</el-button>
+      </div>
     </el-col>
+
     <el-col :span="8" class="right">
-    
       <section >
       <div class="wrapper">
         <nav>
@@ -83,17 +91,17 @@ formRef.value.validate(async(valid) => {
           <div class="form"> <!--绑定对象获取表单实例-->
             <el-form ref="formRef"  :model="form"  :rules="rules" label-position="right" label-width="60px"   status-icon> <!--给这个表单绑定model属性，啊我不知道这个model属性是干什么的-->
               <el-form-item prop="username"  label="账户">
-                <el-input v-model="form.username"/><!--为啥这个是双向绑定呀-->
+                <el-input v-model="form.username" placeholder="请输入用户名"/><!--为啥这个是双向绑定呀-->
               </el-form-item>
               <el-form-item prop="password" label="密码">
-                <el-input v-model="form.password"/>
+                <el-input v-model="form.password" type="password" placeholder="请输入密码"/>
               </el-form-item>
               <el-form-item prop="agree" label-width="22px"><!--实现校验规则-->
                 <el-checkbox  size="large" v-model="form.agree"><!--绑定对象-->
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
-              <el-button size="large" class="subBtn" @click="doLogin">点击登录</el-button><!--给登入按钮绑定事件-->
+              <el-button size="large" class="subBtn" @click="doLogin" type="primary">点击登录</el-button><!--给登入按钮绑定事件-->
             </el-form>
           </div>
         </div>
@@ -110,9 +118,34 @@ formRef.value.validate(async(valid) => {
 }
 
 .left {
-  background-color: aquamarine;
-
+  /*background-color: aquamarine;*/
   /* 你可以根据需要添加更多样式 */
+  background: linear-gradient(135deg, #50c9c3, #96deda); /* 渐变背景 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  .left-content {
+    text-align: center;
+
+    .welcome {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    .home-btn {
+      background-color: #ff6f61;
+      border-color: #ff6f61;
+      color: #fff;
+      font-size: 1.2rem;
+      padding: 10px 20px;
+    }
+  }
 }
 
 .right {
@@ -127,27 +160,35 @@ formRef.value.validate(async(valid) => {
 .wrapper {
     width: 480px;
     background: #fff;
-    left: 50%;
+    /*left: 50%;
     top: 54px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);*/
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    border-radius: 8px;
 
     nav {
-      font-size: 14px;
+      /*font-size: 14px;*/
+      font-size: 18px;
       height: 55px;
       margin-bottom: 20px;
       border-bottom: 1px solid #f5f5f5;
       display: flex;
-      padding: 0 40px;
-      text-align: right;
+      justify-content: center;
       align-items: center;
+      /*padding: 0 40px;
+      text-align: right;
+      align-items: center;*/
 
       a {
-        flex: 1;
+        /*flex: 1;
         line-height: 1;
         display: inline-block;
         font-size: 18px;
         position: relative;
-        text-align: center;
+        text-align: center;*/
+        font-size: 20px;
+        color: #333;
       }
     }
   }
@@ -167,7 +208,30 @@ formRef.value.validate(async(valid) => {
   }
 
   .form {
-    padding: 0 20px 20px 20px;
+    padding: 0 20px;
+
+    .el-form-item {
+      margin-bottom: 28px;
+
+      .el-input {
+        height: 40px;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+    }
+
+    .el-checkbox {
+      margin-bottom: 20px;
+    }
+
+    .subBtn {
+      background-color: #409eff;
+      width: 100%;
+      color: #fff;
+      font-size: 18px;
+      padding: 10px 0;
+      border-radius: 5px;
+    }
 
     &-item {
       margin-bottom: 28px;
