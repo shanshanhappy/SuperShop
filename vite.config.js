@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from 'node:url'
-
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 //elementui 按需导入
@@ -19,6 +18,7 @@ export default defineConfig({
           ElementPlusResolver({importStyle:"sass"})
       ],
     }),
+  
   ],
   resolve: {
     alias: {
@@ -35,5 +35,15 @@ export default defineConfig({
         `
       }
     }
-  }
+  },
+  server:
+  {
+    proxy: {
+
+      '/api': {
+        target: 'http://ceshi13.dishait.cn',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+  }},
 })
