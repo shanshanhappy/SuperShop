@@ -6,14 +6,7 @@ const handleSelect = (index) => {
     console.log(index)
     router.push({ path: index })
 }
-
-
-
-
-
-
 </script>
-
 <template>
       <div class="menu-container">
     <el-menu default-active="/back/transaction" class="el-menu-vertical-demo custom-menu" @select="handleSelect">
@@ -32,7 +25,6 @@ const handleSelect = (index) => {
     </el-menu>
   </div>
   </template>
-  
   <style scoped lang="scss">
   .menu-container {
     width: 100%; /* 设置菜单宽度 */
