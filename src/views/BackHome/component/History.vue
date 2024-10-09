@@ -1,4 +1,69 @@
 <!-- eslint-disable vue/multi-word-component-names -->
+<script>
+/*
+一.查看交易历史也需要用到接口
+1.
+export const getTransactionHistoryAPI = () => {
+  return httpInstance({
+    url: '/transactions/history', // 假设这是获取交易历史的接口 URL
+    method: 'GET',
+  });
+};
+
+
+
+
+
+
+
+
+
+
+*/
+export default {
+  data() {
+    return {
+      transactionData: [
+        {
+          transactionId: 'T12345',
+          productName: '商品A',
+          date: '2024-09-10',
+          quantity: 2,
+          totalAmount: 719.8,
+          notes: '快速发货'
+        },
+        {
+          transactionId: 'T12346',
+          productName: '商品B',
+          date: '2024-09-11',
+          quantity: 1,
+          totalAmount: 359.9,
+          notes: '包装完好'
+        },
+        {
+          transactionId: 'T12347',
+          productName: '商品C',
+          date: '2024-09-12',
+          quantity: 3,
+          totalAmount: 1079.7,
+          notes: ''
+        }
+      ],
+      dialogVisible: false,
+      selectedTransaction: null
+    };
+  },
+  methods: {
+    viewDetails(transaction) {
+      this.selectedTransaction = transaction;
+      this.dialogVisible = true;
+    },
+    handleClose() {
+      this.selectedTransaction = null;
+    }
+  }
+};
+</script>
 <template>
     <div class="transaction-history-container">
       <el-table :data="transactionData" stripe style="width: 100%" class="el-table" height="500">
@@ -26,60 +91,15 @@
           <p><strong>总金额:</strong> ¥{{ selectedTransaction.totalAmount }}</p>
           <p><strong>备注:</strong> {{ selectedTransaction.notes || '无' }}</p>
         </div>
-  
-        <!-- 使用 v-slot:footer -->
-        <span slot="footer" class="dialog-footer">
+
+          <template #footer >
           <el-button @click="dialogVisible = false" class="el-button">关闭</el-button>
-        </span>
+          </template>
       </el-dialog>
     </div>
   </template>
   
-  <script>
-  export default {
-    data() {
-      return {
-        transactionData: [
-          {
-            transactionId: 'T12345',
-            productName: '商品A',
-            date: '2024-09-10',
-            quantity: 2,
-            totalAmount: 719.8,
-            notes: '快速发货'
-          },
-          {
-            transactionId: 'T12346',
-            productName: '商品B',
-            date: '2024-09-11',
-            quantity: 1,
-            totalAmount: 359.9,
-            notes: '包装完好'
-          },
-          {
-            transactionId: 'T12347',
-            productName: '商品C',
-            date: '2024-09-12',
-            quantity: 3,
-            totalAmount: 1079.7,
-            notes: ''
-          }
-        ],
-        dialogVisible: false,
-        selectedTransaction: null
-      };
-    },
-    methods: {
-      viewDetails(transaction) {
-        this.selectedTransaction = transaction;
-        this.dialogVisible = true;
-      },
-      handleClose() {
-        this.selectedTransaction = null;
-      }
-    }
-  };
-  </script>
+  
   
   <style scoped>
   .transaction-history-container {

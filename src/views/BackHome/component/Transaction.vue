@@ -1,7 +1,116 @@
 <!-- eslint-disable vue/multi-word-component-names -->
+<script>
+/*
+其实可以使用pinia来管理商品数据，这样只用放送一次商品的数据请求，但是项目刚开始，所以就先不进行优化了
+假设product是使用api获取得到的数据
+
+一.在显示购买方的时间需要接口获取买方列表
+1.接口封装
+export const getbuyersAPI = () => {
+  return httpInstance({
+    url: '/goods/buy', // 假设这个 URL 返回所有购买者的列表
+    method: 'GET',
+  });
+};
+2.利用接口获取的列表数据
+  import { ref, onMounted } from 'vue';
+  import { getbuyersAPI } from '@/apis/buyers'; // 请替换为实际的 API 文件路径
+
+  // 获取购买者列表
+  const buyers = ref([]);
+
+  const getBuyers = async () => {
+    try {
+      const res = await getbuyersAPI();
+      buyers.value = res.data; // 根据后端返回的数据属性值
+    } catch (error) {
+      console.error('获取购买者列表失败:', error);
+    }
+  };
+
+  onMounted(() => getBuyers()); // 在组件挂载时调用获取购买者列表
+3.将获取的数据用于渲染
+<div class="buyer-list">
+    <el-card v-for="buyer in buyers" :key="buyer.id" class="buyer-card" @click="selectBuyer(buyer)" >
+      <p>购买者: {{ buyer.name }}</p>
+      <p>联系电话: {{ buyer.contact }}</p>
+      <p>联系微信: {{ buyer.contact }}</p>
+    </el-card>
+  </div>
+二.这里有一个冻结商品的业务，当商品库存stock为0时，
+商品将不允许购买者购买，并将商品信息从数据库的删除
+而且还可以将交易者的信息上传到Costumes数据库中trader表中。
+1.接口封装
+export const freezeProductAPI = (productId, traderId，Nowtime) => {//这里traderId是buyerId
+  return httpInstance({
+    url: '/goods/freeze', // 假设这个 URL 是冻结商品的接口
+    method: 'POST',
+    data: {
+      productId,
+      traderId,
+      Nowtime
+    },
+  });
+};
+2.调用接口
+  methods: {
+    selectBuyer(buyer) {
+      this.selectedBuyer = buyer;
+      this.freezeDialogVisible = true;
+    },
+    confirmFreeze() {
+      // 调用冻结商品接口
+      freezeProductAPI(this.product.id, this.selectedBuyer.id)
+        .then(response => {
+          this.$message.success(`商品已冻结给购买者 ${this.selectedBuyer.name}`);
+          this.freezeDialogVisible = false;
+        })
+        .catch(error => {
+          this.$message.error('冻结商品失败: ' + error.message);
+        });
+    }
+  }
+};
+  
+*/
+  export default {
+    data() {
+      return {
+        product: {
+          image: 'https://th.bing.com/th/id/R.33f6c8fbba013a1f0e6152dc52b73c1b?rik=ZwUQ7gkx42ecLw&riu=http%3a%2f%2fimg.alicdn.com%2fimgextra%2fi4%2f2985248266%2fO1CN01elz76r2AvsQphdV5H_!!2985248266-0-daren.jpg&ehk=VqhyO9LO%2byoC80bfw7%2fjwDfO5TG0mRM7fDVO2jRw47k%3d&risl=&pid=ImgRaw&r=0', // 示例图片地址
+          name: 'Kappa女鞋德训鞋',
+          price: 359.9,
+          stock: 1,
+          description: '2024秋季新款运动休闲鞋女百搭低帮复古板鞋。'
+        },
+        buyers: [
+          { id: 1, name: '买家1', contact: '1234567890' },
+          { id: 2, name: '买家2', contact: '1234567891' },
+          { id: 3, name: '买家3', contact: '1234567892' },
+          { id: 4, name: '买家4', contact: '1234567893' },
+          { id: 5, name: '买家5', contact: '1234567894' },
+          { id: 6, name: '买家6', contact: '1234567895' }
+        ],
+        freezeDialogVisible: false, // 控制冻结对话框的显示
+        selectedBuyer: null
+      };
+    },
+    methods: {
+      selectBuyer(buyer) {
+        this.selectedBuyer = buyer;
+        this.freezeDialogVisible = true;
+      },
+      confirmFreeze() {
+        // 冻结商品逻辑
+        this.$message.success(`商品已冻结给购买者 ${this.selectedBuyer.name}`);
+        this.freezeDialogVisible = false;
+      }
+    }
+  };
+  </script>
 <template>
     <div class="transaction-business">
-      <!-- 左侧商品信息 -->
+    
       <div class="product-info">
         <el-image
           :src="product.image"
@@ -17,7 +126,7 @@
         </div>
       </div>
   
-      <!-- 右侧购买者选择 -->
+     
       <div class="buyer-list">
         <el-card
           v-for="buyer in buyers"
@@ -48,42 +157,7 @@
     </div>
   </template>
   
-  <script>
-  export default {
-    data() {
-      return {
-        product: {
-          image: 'https://th.bing.com/th/id/R.33f6c8fbba013a1f0e6152dc52b73c1b?rik=ZwUQ7gkx42ecLw&riu=http%3a%2f%2fimg.alicdn.com%2fimgextra%2fi4%2f2985248266%2fO1CN01elz76r2AvsQphdV5H_!!2985248266-0-daren.jpg&ehk=VqhyO9LO%2byoC80bfw7%2fjwDfO5TG0mRM7fDVO2jRw47k%3d&risl=&pid=ImgRaw&r=0', // 示例图片地址
-          name: 'Kappa女鞋德训鞋',
-          price: 359.9,
-          stock: 10,
-          description: '2024秋季新款运动休闲鞋女百搭低帮复古板鞋。'
-        },
-        buyers: [
-          { id: 1, name: '买家1', contact: '1234567890' },
-          { id: 2, name: '买家2', contact: '1234567891' },
-          { id: 3, name: '买家3', contact: '1234567892' },
-          { id: 4, name: '买家4', contact: '1234567893' },
-          { id: 5, name: '买家5', contact: '1234567894' },
-          { id: 6, name: '买家6', contact: '1234567895' }
-        ],
-        freezeDialogVisible: false, // 控制冻结对话框的显示
-        selectedBuyer: null
-      };
-    },
-    methods: {
-      selectBuyer(buyer) {
-        this.selectedBuyer = buyer;
-        this.freezeDialogVisible = true;
-      },
-      confirmFreeze() {
-        // 冻结商品逻辑
-        this.$message.success(`商品已冻结给购买者 ${this.selectedBuyer.name}`);
-        this.freezeDialogVisible = false;
-      }
-    }
-  };
-  </script>
+  
   
   <style scoped lang="scss">
   .transaction-business {

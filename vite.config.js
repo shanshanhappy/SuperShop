@@ -45,5 +45,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
+      '/apis': {
+        target: 'http://localhost:8080/SuperShop/customers/v2',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/apis/, ''),
+      },
   }},
+  
 })

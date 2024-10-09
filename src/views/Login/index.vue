@@ -1,8 +1,53 @@
 <!-- eslint-disable vue/multi-word-component-names -->
-
-<!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-//上面的，视频都没写
+/*
+登录模块这里也是需要一个登录的api接口，然后调用这个接口进行登录验证。
+一.首先这个是一个post请求，不需要接收数据比较方便，在这前两步都相同就是第三步不同
+export const loginAPI=({username, password})=>{//利用解构赋值 直接传俩参数，利于维护，他们说如果不去解构的话，都不知道要post什么数据
+    return httpInstance.post(
+        '/admin/login',
+        {       
+            username,
+            password
+        },
+       { headers: {
+            'Content-Type': 'application/json'
+          }
+
+        }
+    )
+}
+二.直接调用接口，如下内容
+//二.获取form实例做统一校验
+const formRef = ref(null)
+const router = useRouter()
+//const {username,password}=form.value//获取表单的两个字段
+const doLogin = ()=>{
+//调用实例方法
+formRef.value.validate(async(valid) => {
+     if(valid){
+         // TODO LOGIN
+     const res =await loginAPI(form.value)//调用api验证账户是否正确,
+     console.log(res)
+
+      // 1. 提示用户
+      ElMessage({ type: 'success', message: '登录成功' })
+     //2.利用cookies存储用户信息，但是现在只有一个用户先不写了
+
+     //3.验证成功后跳转到相关页面
+      router.replace({ path: '/back' })
+     }else{
+      console.log('登录失败')
+      return false
+     }
+  })
+}
+
+
+
+
+*/
+
 import { ref } from 'vue'
 import { loginAPI2 } from '@/apis/user'
 import { useRouter } from 'vue-router'
