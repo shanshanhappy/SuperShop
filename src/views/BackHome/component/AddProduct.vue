@@ -5,11 +5,11 @@
         ref="productForm"
         :model="product"
         :rules="rules"
-        label-width="100px"
+        label-width="120px"
         class="product-form"
       >
         <el-form-item label="商品名称" prop="name">
-          <el-input v-model="product.name" placeholder="请输入商品名称"></el-input>
+          <el-input v-model="product.name" placeholder="请输入商品名称" clearable></el-input>
         </el-form-item>
   
         <el-form-item label="商品价格" prop="price">
@@ -21,11 +21,12 @@
             type="textarea"
             v-model="product.description"
             placeholder="请输入商品描述"
+            :rows="4"
           ></el-input>
         </el-form-item>
   
         <!-- 商品图片上传 -->
-        <el-form-item label="商品图片" prop="image">
+        <el-form-item label="商品图片" prop="imageList">
           <el-upload
             class="upload-demo"
             action="https://jsonplaceholder.typicode.com/posts/"
@@ -33,9 +34,17 @@
             :before-upload="beforeUpload"
             :file-list="product.imageList"
             list-type="picture-card"
-          >
-            <i class="el-icon-plus"></i>
+            :show-file-list="false"
+          ><i class="el-icon-plus"></i>
+            <div style="margin-top: 8px">上传商品图片</div> <!-- 提示信息 -->
           </el-upload>
+          <el-image
+              v-for="(image, index) in product.imageList"
+              :key="index"
+              :src="image.url"
+          style="width: 100px; height: 100px; margin-top: 10px;"
+          fit="cover"
+          />
         </el-form-item>
   
         <el-form-item>
@@ -105,6 +114,10 @@
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
+    background-color: #f9f9f9; /* 背景色 */
+    border-radius: 8px; /* 圆角 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 阴影 */
+
   }
   .upload-demo {
     display: inline-block;

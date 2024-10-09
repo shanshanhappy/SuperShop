@@ -24,7 +24,9 @@
    .app_footer {
      overflow: hidden;
      background-color: #f5f5f5;
-     padding-top: 500px;
+     /*padding-top: 500px;*/
+     /*这里改了一下距离页面底部的距离*/
+     padding-top: 10px;
    
    
      .extra {
